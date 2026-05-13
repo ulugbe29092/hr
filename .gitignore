@@ -1,3 +1,6 @@
+# GitHub Actions (needs workflow scope token to push)
+.github/workflows/
+
 # Dependencies
 node_modules/
 .pnp
