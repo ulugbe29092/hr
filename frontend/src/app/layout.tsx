@@ -14,13 +14,36 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'NEXUS Platform',
-    template: '%s | NEXUS Platform',
+    default: 'StaffIQ — Enterprise Management Platform',
+    template: '%s | StaffIQ',
   },
-  description: 'Enterprise ERP CRM HR AI Platform — All-in-one business management',
-  keywords: ['ERP', 'CRM', 'HR', 'AI', 'Enterprise', 'Business Management'],
-  authors: [{ name: 'NEXUS Team' }],
-  robots: 'noindex, nofollow',
+  description: 'Professional ERP, CRM, and HR management system with AI-powered insights. Streamline your business operations with our all-in-one platform.',
+  keywords: ['ERP', 'CRM', 'HR Management', 'AI', 'Enterprise Software', 'Business Management', 'Payroll', 'Attendance', 'Sales Pipeline'],
+  authors: [{ name: 'StaffIQ Team' }],
+  creator: 'StaffIQ',
+  publisher: 'StaffIQ',
+  metadataBase: new URL('https://staffiq.vercel.app'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://staffiq.vercel.app',
+    title: 'StaffIQ — Enterprise Management Platform',
+    description: 'Professional ERP, CRM, and HR management system with AI-powered insights',
+    siteName: 'StaffIQ',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'StaffIQ — Enterprise Management Platform',
+    description: 'Professional ERP, CRM, and HR management system with AI-powered insights',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export const viewport: Viewport = {

@@ -32,42 +32,12 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
     try {
-      // Demo mode - backend ishlamasa ham kirish mumkin
-      const demoUsers = [
-        { email: 'admin@nexus.com', password: 'Admin123!', role: 'ADMIN', name: 'Admin User' },
-        { email: 'manager@nexus.com', password: 'Manager123!', role: 'MANAGER', name: 'Manager User' },
-        { email: 'employee@nexus.com', password: 'Employee123!', role: 'EMPLOYEE', name: 'Employee User' },
-      ];
-
-      const demoUser = demoUsers.find(u => u.email === data.email && u.password === data.password);
-
-      if (demoUser) {
-        // Demo login - backend kerak emas
-        const mockUser = {
-          id: '1',
-          email: demoUser.email,
-          fullName: demoUser.name,
-          role: demoUser.role,
-          avatar: null,
-        };
-        const mockToken = 'demo_token_' + Date.now();
-        
-        setAuth(mockUser, mockToken, mockToken);
-        toast.success(`Welcome back, ${demoUser.name}!`);
-        router.push('/dashboard');
-      } else {
-        // Real backend login
-        try {
-          const result = await authService.login(data);
-          setAuth(result.user, result.accessToken, result.refreshToken);
-          toast.success(`Welcome back, ${result.user.fullName}!`);
-          router.push('/dashboard');
-        } catch (error: any) {
-          toast.error('Invalid email or password');
-        }
-      }
+      const result = await authService.login(data);
+      setAuth(result.user, result.accessToken, result.refreshToken);
+      toast.success(`Welcome back, ${result.user.fullName}!`);
+      router.push('/dashboard');
     } catch (error: any) {
-      toast.error('Login failed');
+      toast.error(error?.response?.data?.message || 'Invalid email or password');
     } finally {
       setIsLoading(false);
     }
@@ -113,8 +83,8 @@ export default function LoginPage() {
           >
             <Zap className="w-8 h-8 text-white" />
           </motion.div>
-          <h1 className="text-3xl font-bold gradient-text">NEXUS</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Enterprise Platform</p>
+          <h1 className="text-3xl font-bold gradient-text">StaffIQ</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Enterprise Management Platform</p>
         </div>
 
         {/* Card */}
@@ -197,16 +167,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-nexus-500/5 border border-nexus-500/20 rounded-xl">
-            <p className="text-xs font-semibold text-nexus-600 dark:text-nexus-400 mb-2">🎯 Demo Login:</p>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <p><span className="font-medium">Admin:</span> admin@nexus.com / Admin123!</p>
-              <p><span className="font-medium">Manager:</span> manager@nexus.com / Manager123!</p>
-              <p><span className="font-medium">Employee:</span> employee@nexus.com / Employee123!</p>
-            </div>
-          </div>
-
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
@@ -218,11 +178,14 @@ export default function LoginPage() {
           </div>
 
           {/* Google */}
-          <a
-            href={`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/google`}
+          <button
+            type="button"
+            onClick={() => {
+              toast.error('Google login requires backend server. Please use email/password login.');
+            }}
             className="w-full flex items-center justify-center gap-3 py-2.5 px-4
                        border border-border rounded-xl text-sm font-medium
-                       hover:bg-accent transition-all duration-200"
+                       hover:bg-accent transition-all duration-200 group"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -230,8 +193,8 @@ export default function LoginPage() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Continue with Google
-          </a>
+            <span className="group-hover:text-foreground transition-colors">Continue with Google</span>
+          </button>
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
