@@ -3,13 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import {
-  Users, TrendingUp, DollarSign, Clock,
-  ArrowUpRight, ArrowDownRight, Activity,
-  BarChart3, Target, Briefcase,
+  Users, DollarSign, Clock, Activity, BarChart3, Target, Briefcase,
 } from 'lucide-react';
 import {
-  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  AreaChart, Area, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import { analyticsService } from '@/services/analytics.service';
 import { StatCard } from '@/components/dashboard/stat-card';
@@ -27,6 +25,20 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
+const pipelineData = [
+  { name: 'Lead', value: 35 },
+  { name: 'Contact', value: 25 },
+  { name: 'Negotiation', value: 20 },
+  { name: 'Won', value: 15 },
+  { name: 'Lost', value: 5 },
+];
+
+const revenueData = Array.from({ length: 12 }, (_, i) => ({
+  month: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][i],
+  income: Math.floor(Math.random() * 80000 + 40000),
+  expense: Math.floor(Math.random() * 40000 + 20000),
+}));
+
 export default function DashboardPage() {
   const { data: overview, isLoading: overviewLoading } = useQuery({
     queryKey: ['analytics', 'overview'],
@@ -40,89 +52,69 @@ export default function DashboardPage() {
     refetchInterval: 60000,
   });
 
-  const stats = [
-    {
-      title: 'Total Employees',
-      value: overview?.totalEmployees ?? 0,
-      icon: Users,
-      color: 'blue',
-      change: '+12%',
-      trend: 'up',
-    },
-    {
-      title: 'Monthly Revenue',
-      value: `$${((overview?.monthlyRevenue ?? 0) / 1000).toFixed(1)}K`,
-      icon: DollarSign,
-      color: 'green',
-      change: `${kpi?.revenueGrowth > 0 ? '+' : ''}${kpi?.revenueGrowth?.toFixed(1) ?? 0}%`,
-      trend: (kpi?.revenueGrowth ?? 0) >= 0 ? 'up' : 'down',
-    },
-    {
-      title: 'Active Deals',
-      value: overview?.activeSalesDeals ?? 0,
-      icon: Briefcase,
-      color: 'purple',
-      change: '+5',
-      trend: 'up',
-    },
-    {
-      title: 'Attendance Today',
-      value: overview?.attendanceToday ?? 0,
-      icon: Clock,
-      color: 'orange',
-      change: '94%',
-      trend: 'up',
-    },
-  ];
-
-  // Mock chart data
-  const revenueData = Array.from({ length: 12 }, (_, i) => ({
-    month: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][i],
-    income: Math.floor(Math.random() * 80000 + 40000),
-    expense: Math.floor(Math.random() * 40000 + 20000),
-  }));
-
-  const pipelineData = [
-    { name: 'Lead', value: 35 },
-    { name: 'Contact', value: 25 },
-    { name: 'Negotiation', value: 20 },
-    { name: 'Won', value: 15 },
-    { name: 'Lost', value: 5 },
-  ];
-
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
-      {/* Page Header */}
+      {/* Header */}
       <motion.div variants={item} className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            Welcome back — here's what's happening today
+            Welcome back — here&apos;s what&apos;s happening today
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 text-xs text-emerald-500 bg-emerald-500/10 px-3 py-1.5 rounded-full">
-            <Activity className="w-3 h-3" />
-            Live
-          </div>
+        <div className="flex items-center gap-1.5 text-xs text-emerald-500 bg-emerald-500/10 px-3 py-1.5 rounded-full">
+          <Activity className="w-3 h-3" />
+          Live
         </div>
       </motion.div>
 
-      {/* Stats Grid */}
+      {/* Stats */}
       <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {stats.map((stat, i) => (
-          <StatCard key={i} {...stat} loading={overviewLoading} />
-        ))}
+        <StatCard
+          title="Total Employees"
+          value={overview?.totalEmployees ?? 0}
+          icon={Users}
+          color="blue"
+          change="+12%"
+          trend="up"
+          loading={overviewLoading}
+        />
+        <StatCard
+          title="Monthly Revenue"
+          value={`$${((overview?.monthlyRevenue ?? 0) / 1000).toFixed(1)}K`}
+          icon={DollarSign}
+          color="green"
+          change={`${(kpi?.revenueGrowth ?? 0) >= 0 ? '+' : ''}${(kpi?.revenueGrowth ?? 0).toFixed(1)}%`}
+          trend={(kpi?.revenueGrowth ?? 0) >= 0 ? 'up' : 'down'}
+          loading={overviewLoading}
+        />
+        <StatCard
+          title="Active Deals"
+          value={overview?.activeSalesDeals ?? 0}
+          icon={Briefcase}
+          color="purple"
+          change="+5"
+          trend="up"
+          loading={overviewLoading}
+        />
+        <StatCard
+          title="Attendance Today"
+          value={overview?.attendanceToday ?? 0}
+          icon={Clock}
+          color="orange"
+          change="94%"
+          trend="up"
+          loading={overviewLoading}
+        />
       </motion.div>
 
-      {/* Charts Row */}
+      {/* Charts */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        {/* Revenue Chart */}
         <motion.div variants={item} className="xl:col-span-2 card-premium p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="font-semibold text-foreground">Revenue Overview</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Income vs Expenses — 2024</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Income vs Expenses</p>
             </div>
             <BarChart3 className="w-5 h-5 text-muted-foreground" />
           </div>
@@ -140,7 +132,7 @@ export default function DashboardPage() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}K`} />
+              <YAxis tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `$${(v/1000).toFixed(0)}K`} />
               <Tooltip
                 formatter={(value: number) => [`$${value.toLocaleString()}`, '']}
                 contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '12px' }}
@@ -151,7 +143,6 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Pipeline Chart */}
         <motion.div variants={item} className="card-premium p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -171,27 +162,23 @@ export default function DashboardPage() {
             </PieChart>
           </ResponsiveContainer>
           <div className="space-y-2 mt-2">
-            {pipelineData.map((item, i) => (
+            {pipelineData.map((entry, i) => (
               <div key={i} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full" style={{ background: COLORS[i] }} />
-                  <span className="text-muted-foreground">{item.name}</span>
+                  <span className="text-muted-foreground">{entry.name}</span>
                 </div>
-                <span className="font-medium">{item.value}%</span>
+                <span className="font-medium">{entry.value}%</span>
               </div>
             ))}
           </div>
         </motion.div>
       </div>
 
-      {/* Bottom Row */}
+      {/* Bottom */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        <motion.div variants={item}>
-          <RecentActivity />
-        </motion.div>
-        <motion.div variants={item}>
-          <AiInsightCard />
-        </motion.div>
+        <motion.div variants={item}><RecentActivity /></motion.div>
+        <motion.div variants={item}><AiInsightCard /></motion.div>
       </div>
     </motion.div>
   );

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
 import { Plus, Search, Filter, Download, Users, UserCheck, UserX, TrendingUp } from 'lucide-react';
 import { api } from '@/services/api';
 import { StatCard } from '@/components/dashboard/stat-card';

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Plus, Briefcase, Users, UserCheck, Brain, Search } from 'lucide-react';
+import { Plus, Briefcase, Users, UserCheck, Brain } from 'lucide-react';
 import { api } from '@/services/api';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { aiService } from '@/services/ai.service';

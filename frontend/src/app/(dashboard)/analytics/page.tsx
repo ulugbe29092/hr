@@ -1,9 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
 import {
-  AreaChart, Area, BarChart, Bar, LineChart, Line,
+  BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
 } from 'recharts';
@@ -20,12 +19,6 @@ const kpiData = [
   { subject: 'Satisfaction', A: 88 },
   { subject: 'Growth', A: 76 },
 ];
-
-const heatmapData = Array.from({ length: 7 }, (_, day) =>
-  Array.from({ length: 24 }, (_, hour) => ({
-    day, hour, value: Math.floor(Math.random() * 100),
-  })),
-).flat();
 
 export default function AnalyticsPage() {
   const { data: overview } = useQuery({
@@ -60,7 +53,7 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard title="Total Employees" value={overview?.totalEmployees ?? 0} icon={Users} color="blue" />
-        <StatCard title="Monthly Revenue" value={formatCurrency(overview?.monthlyRevenue ?? 0)} icon={DollarSign} color="green" change={`${kpi?.revenueGrowth > 0 ? '+' : ''}${kpi?.revenueGrowth?.toFixed(1) ?? 0}%`} trend={kpi?.revenueGrowth >= 0 ? 'up' : 'down'} />
+        <StatCard title="Monthly Revenue" value={formatCurrency(overview?.monthlyRevenue ?? 0)} icon={DollarSign} color="green" change={`${kpi?.revenueGrowth > 0 ? '+' : ''}${kpi?.revenueGrowth?.toFixed(1) ?? 0}%`} trend={(kpi?.revenueGrowth >= 0 ? 'up' : 'down') as 'up' | 'down'} />
         <StatCard title="Win Rate" value={`${kpi?.winRate?.toFixed(0) ?? 0}%`} icon={Target} color="purple" />
         <StatCard title="Active Deals" value={overview?.activeSalesDeals ?? 0} icon={TrendingUp} color="orange" />
       </div>
@@ -102,7 +95,7 @@ export default function AnalyticsPage() {
       <div className="card-premium p-6">
         <h3 className="font-semibold text-foreground mb-4">Attendance Heatmap (Weekly)</h3>
         <div className="flex gap-1">
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, d) => (
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
             <div key={day} className="flex-1">
               <p className="text-[10px] text-muted-foreground text-center mb-1">{day}</p>
               <div className="grid grid-rows-8 gap-0.5">
