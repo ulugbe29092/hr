@@ -32,12 +32,42 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
     try {
-      const result = await authService.login(data);
-      setAuth(result.user, result.accessToken, result.refreshToken);
-      toast.success(`Welcome back, ${result.user.fullName}!`);
-      router.push('/dashboard');
+      // Demo mode - backend ishlamasa ham kirish mumkin
+      const demoUsers = [
+        { email: 'admin@nexus.com', password: 'Admin123!', role: 'ADMIN', name: 'Admin User' },
+        { email: 'manager@nexus.com', password: 'Manager123!', role: 'MANAGER', name: 'Manager User' },
+        { email: 'employee@nexus.com', password: 'Employee123!', role: 'EMPLOYEE', name: 'Employee User' },
+      ];
+
+      const demoUser = demoUsers.find(u => u.email === data.email && u.password === data.password);
+
+      if (demoUser) {
+        // Demo login - backend kerak emas
+        const mockUser = {
+          id: '1',
+          email: demoUser.email,
+          fullName: demoUser.name,
+          role: demoUser.role,
+          avatar: null,
+        };
+        const mockToken = 'demo_token_' + Date.now();
+        
+        setAuth(mockUser, mockToken, mockToken);
+        toast.success(`Welcome back, ${demoUser.name}!`);
+        router.push('/dashboard');
+      } else {
+        // Real backend login
+        try {
+          const result = await authService.login(data);
+          setAuth(result.user, result.accessToken, result.refreshToken);
+          toast.success(`Welcome back, ${result.user.fullName}!`);
+          router.push('/dashboard');
+        } catch (error: any) {
+          toast.error('Invalid email or password');
+        }
+      }
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || 'Login failed');
+      toast.error('Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -166,6 +196,16 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          {/* Demo Credentials */}
+          <div className="mt-6 p-4 bg-nexus-500/5 border border-nexus-500/20 rounded-xl">
+            <p className="text-xs font-semibold text-nexus-600 dark:text-nexus-400 mb-2">🎯 Demo Login:</p>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <p><span className="font-medium">Admin:</span> admin@nexus.com / Admin123!</p>
+              <p><span className="font-medium">Manager:</span> manager@nexus.com / Manager123!</p>
+              <p><span className="font-medium">Employee:</span> employee@nexus.com / Employee123!</p>
+            </div>
+          </div>
 
           {/* Divider */}
           <div className="relative my-6">
