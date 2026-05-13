@@ -80,7 +80,7 @@ export class AuthService {
 
     // Reset login attempts
     user.loginAttempts = 0;
-    user.lockedUntil = undefined;
+    user.lockedUntil = null as any;
     user.lastLoginAt = new Date();
     user.lastLoginIp = ip;
 
@@ -138,8 +138,8 @@ export class AuthService {
     if (user.otpCode !== dto.otp)
       throw new BadRequestException('Invalid OTP');
 
-    user.otpCode = undefined;
-    user.otpExpiresAt = undefined;
+    user.otpCode = null as any;
+    user.otpExpiresAt = null as any;
     user.isEmailVerified = true;
     await this.userRepository.save(user);
 
@@ -270,15 +270,15 @@ export class AuthService {
     }
 
     user.password = dto.newPassword;
-    user.otpCode = undefined;
-    user.otpExpiresAt = undefined;
+    user.otpCode = null as any;
+    user.otpExpiresAt = null as any;
     await this.userRepository.save(user);
     return { message: 'Password reset successfully' };
   }
 
   // ─── Logout ───────────────────────────────────────────────────────────────────
   async logout(userId: string) {
-    await this.userRepository.update(userId, { refreshToken: undefined });
+    await this.userRepository.update(userId, { refreshToken: null as any });
     return { message: 'Logged out successfully' };
   }
 

@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, OneToMany, JoinColumn, Index } from 'typeorm';
+import { Entity, Column, Index } from 'typeorm';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { Status } from '../../../common/enums/status.enum';
 
@@ -28,7 +28,7 @@ export class Employee extends BaseEntity {
   @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ name: 'full_name', insert: false, update: false, select: false })
+  // computed in service layer
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }

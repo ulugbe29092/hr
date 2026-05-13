@@ -60,17 +60,17 @@ export class User extends BaseEntity {
   @Exclude()
   twoFactorSecret?: string;
 
-  @Column({ name: 'otp_code', nullable: true })
+  @Column({ name: 'otp_code', nullable: true, type: 'varchar' })
   @Exclude()
-  otpCode?: string;
+  otpCode?: string | null;
 
-  @Column({ name: 'otp_expires_at', nullable: true })
+  @Column({ name: 'otp_expires_at', nullable: true, type: 'timestamptz' })
   @Exclude()
-  otpExpiresAt?: Date;
+  otpExpiresAt?: Date | null;
 
-  @Column({ name: 'refresh_token', nullable: true })
+  @Column({ name: 'refresh_token', nullable: true, type: 'text' })
   @Exclude()
-  refreshToken?: string;
+  refreshToken?: string | null;
 
   @Column({ name: 'last_login_at', nullable: true })
   lastLoginAt?: Date;
@@ -82,9 +82,8 @@ export class User extends BaseEntity {
   @Exclude()
   loginAttempts: number;
 
-  @Column({ name: 'locked_until', nullable: true })
-  @Exclude()
-  lockedUntil?: Date;
+  @Column({ name: 'locked_until', nullable: true, type: 'timestamptz' })
+  lockedUntil?: Date | null;
 
   @Column({ type: 'jsonb', name: 'device_history', default: [] })
   @Exclude()
@@ -108,7 +107,7 @@ export class User extends BaseEntity {
 
   isLocked(): boolean {
     if (!this.lockedUntil) return false;
-    return new Date() < this.lockedUntil;
+    return new Date() < new Date(this.lockedUntil);
   }
 }
 

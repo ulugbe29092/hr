@@ -28,12 +28,12 @@ export class TransformInterceptor<T>
     const response = ctx.getResponse();
 
     return next.handle().pipe(
-      map((data) => ({
+      map((data: unknown) => ({
         success: true,
         statusCode: response.statusCode,
-        message: data?.message || 'Success',
-        data: data?.data !== undefined ? data.data : data,
-        meta: data?.meta,
+        message: (data as any)?.message || 'Success',
+        data: (data as any)?.data !== undefined ? (data as any).data : data,
+        meta: (data as any)?.meta,
         timestamp: new Date().toISOString(),
       })),
     );

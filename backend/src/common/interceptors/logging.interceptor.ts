@@ -28,10 +28,10 @@ export class LoggingInterceptor implements NestInterceptor {
             `${method} ${url} ${response.statusCode} ${delay}ms — ${ip} ${userAgent}`,
           );
         },
-        error: (err) => {
+        error: (err: Error) => {
           const delay = Date.now() - start;
           this.logger.error(
-            `${method} ${url} ${err.status || 500} ${delay}ms — ${ip}`,
+            `${method} ${url} ${(err as any).status || 500} ${delay}ms — ${ip}`,
           );
         },
       }),
