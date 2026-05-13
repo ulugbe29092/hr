@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <%- include('partials/sidebar') %>
+  
+  <div class="main-content">
+    <%- include('partials/header') %>
+    
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back! Here's what's happening today.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt"></i>
+            Refresh
+          </button>
+          <button class="btn btn-primary" onclick="showAddModal()">
+            <i class="fas fa-plus"></i>
+            Add New
+          </button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Total Employees</h3>
+            <p class="stat-value">248</p>
+            <span class="stat-change positive">
+              <i class="fas fa-arrow-up"></i> 12% from last month
+            </span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Present Today</h3>
+            <p class="stat-value">234</p>
+            <span class="stat-change positive">
+              <i class="fas fa-check"></i> 94.4% attendance
+            </span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon purple">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Revenue</h3>
+            <p class="stat-value">$124.5K</p>
+            <span class="stat-change positive">
+              <i class="fas fa-arrow-up"></i> 8.2% increase
+            </span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon orange">
+            <i class="fas fa-tasks"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Active Projects</h3>
+            <p class="stat-value">18</p>
+            <span class="stat-change neutral">
+              <i class="fas fa-clock"></i> 3 due this week
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="card-header">
+            <h3>Revenue Overview</h3>
+            <select class="chart-filter">
+              <option>Last 6 months</option>
+              <option>Last year</option>
+              <option>All time</option>
+            </select>
+          </div>
+          <canvas id="revenueChart" height="80"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <h3>Attendance Trend</h3>
+            <select class="chart-filter">
+              <option>This week</option>
+              <option>This month</option>
+              <option>This year</option>
+            </select>
+          </div>
+          <canvas id="attendanceChart" height="80"></canvas>
+        </div>
+      </div>
+
+      <div class="recent-activity">
+        <div class="activity-card">
+          <div class="card-header">
+            <h3>Recent Activity</h3>
+            <a href="#" class="view-all">View All</a>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon blue">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              <div class="activity-content">
+                <p><strong>John Doe</strong> joined the team</p>
+                <span class="activity-time">2 hours ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon green">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="activity-content">
+                <p><strong>Project Alpha</strong> completed</p>
+                <span class="activity-time">5 hours ago</span>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon purple">
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              <div class="activity-content">
+                <p><strong>Invoice #1234</strong> paid</p>
+                <span class="activity-time">1 day ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

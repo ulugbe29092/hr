@@ -1,0 +1,271 @@
+<header class="header">
+  <div class="header-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search employees, clients, projects..." id="globalSearch">
+    </div>
+  </div>
+
+  <div class="header-right">
+    <!-- Notifications -->
+    <div class="dropdown">
+      <button class="header-btn" onclick="toggleDropdown('notifications')">
+        <i class="fas fa-bell"></i>
+        <span class="badge">3</span>
+      </button>
+      <div class="dropdown-menu" id="notifications">
+        <div class="dropdown-header">
+          <h4>Notifications</h4>
+          <button class="mark-read">Mark all as read</button>
+        </div>
+        <div class="notification-list">
+          <div class="notification-item unread">
+            <div class="notification-icon blue">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="notification-content">
+              <p><strong>New employee</strong> joined</p>
+              <span>John Doe added to Sales team</span>
+              <small>2 hours ago</small>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notification-icon green">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-content">
+              <p><strong>Payroll processed</strong></p>
+              <span>Monthly payroll completed successfully</span>
+              <small>5 hours ago</small>
+            </div>
+          </div>
+          <div class="notification-item">
+            <div class="notification-icon purple">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="notification-content">
+              <p><strong>Payment received</strong></p>
+              <span>Invoice #1234 paid by Acme Corp</span>
+              <small>1 day ago</small>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-footer">
+          <a href="/notifications">View all notifications</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <button class="header-btn" onclick="openSettings()">
+      <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- User Menu -->
+    <div class="dropdown">
+      <div class="user-menu" onclick="toggleDropdown('userMenu')">
+        <img src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff" alt="User" class="user-avatar">
+        <div class="user-info">
+          <p class="user-name">Admin User</p>
+          <p class="user-role">Administrator</p>
+        </div>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="dropdown-menu dropdown-menu-right" id="userMenu">
+        <a href="/profile" class="dropdown-item">
+          <i class="fas fa-user"></i>
+          My Profile
+        </a>
+        <a href="/settings" class="dropdown-item">
+          <i class="fas fa-cog"></i>
+          Settings
+        </a>
+        <a href="/help" class="dropdown-item">
+          <i class="fas fa-question-circle"></i>
+          Help & Support
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Settings Modal -->
+<div class="modal" id="settingsModal">
+  <div class="modal-content modal-large">
+    <div class="modal-header">
+      <h2>Settings</h2>
+      <button class="modal-close" onclick="closeSettings()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-tabs">
+        <button class="tab-btn active" onclick="switchTab('general')">
+          <i class="fas fa-cog"></i> General
+        </button>
+        <button class="tab-btn" onclick="switchTab('appearance')">
+          <i class="fas fa-palette"></i> Appearance
+        </button>
+        <button class="tab-btn" onclick="switchTab('notifications')">
+          <i class="fas fa-bell"></i> Notifications
+        </button>
+        <button class="tab-btn" onclick="switchTab('security')">
+          <i class="fas fa-shield-alt"></i> Security
+        </button>
+      </div>
+
+      <div class="settings-content">
+        <!-- General Tab -->
+        <div class="tab-content active" id="general">
+          <div class="setting-group">
+            <h3>General Settings</h3>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Language</label>
+                <p>Choose your preferred language</p>
+              </div>
+              <select class="setting-control">
+                <option>English</option>
+                <option>Uzbek</option>
+                <option>Russian</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Time Zone</label>
+                <p>Set your local time zone</p>
+              </div>
+              <select class="setting-control">
+                <option>UTC+5 (Tashkent)</option>
+                <option>UTC+0 (London)</option>
+                <option>UTC-5 (New York)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Date Format</label>
+                <p>Choose date display format</p>
+              </div>
+              <select class="setting-control">
+                <option>DD/MM/YYYY</option>
+                <option>MM/DD/YYYY</option>
+                <option>YYYY-MM-DD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appearance Tab -->
+        <div class="tab-content" id="appearance">
+          <div class="setting-group">
+            <h3>Appearance</h3>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Theme</label>
+                <p>Choose light or dark theme</p>
+              </div>
+              <div class="theme-selector">
+                <button class="theme-option active" onclick="setTheme('light')">
+                  <i class="fas fa-sun"></i> Light
+                </button>
+                <button class="theme-option" onclick="setTheme('dark')">
+                  <i class="fas fa-moon"></i> Dark
+                </button>
+                <button class="theme-option" onclick="setTheme('auto')">
+                  <i class="fas fa-adjust"></i> Auto
+                </button>
+              </div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Compact Mode</label>
+                <p>Reduce spacing for more content</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div class="tab-content" id="notificationsTab">
+          <div class="setting-group">
+            <h3>Notification Preferences</h3>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Email Notifications</label>
+                <p>Receive notifications via email</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Push Notifications</label>
+                <p>Receive browser push notifications</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>SMS Notifications</label>
+                <p>Receive important alerts via SMS</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Tab -->
+        <div class="tab-content" id="security">
+          <div class="setting-group">
+            <h3>Security Settings</h3>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Two-Factor Authentication</label>
+                <p>Add an extra layer of security</p>
+              </div>
+              <button class="btn btn-secondary btn-sm">Enable 2FA</button>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Change Password</label>
+                <p>Update your account password</p>
+              </div>
+              <button class="btn btn-secondary btn-sm">Change Password</button>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <label>Active Sessions</label>
+                <p>Manage your active sessions</p>
+              </div>
+              <button class="btn btn-secondary btn-sm">View Sessions</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+    </div>
+  </div>
+</div>
